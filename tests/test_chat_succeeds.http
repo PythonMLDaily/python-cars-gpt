@@ -1,0 +1,9 @@
+POST http://127.0.0.1:8080/api/chat
+Accept: application/json
+Content-Type: application/json
+
+# Must return 200 OK with response
+{
+  "query": "Hello World!",
+  "identifier": "1234567890"
+}
