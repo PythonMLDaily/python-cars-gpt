@@ -70,7 +70,7 @@ Context:
     if not os.path.exists('../storage'):
         os.mkdir('../storage')
 
-    with open('../storage/prompt.blob', 'w') as file:
+    with open('../storage/prompt.txt', 'w') as file:
         file.write(prompt)
         file.close()
 
@@ -105,8 +105,8 @@ def get_prompt_template_from_database():
     Get the dataset from the database file
     """
     # Check if dataset file exists, if not, create it
-    if not os.path.exists('../storage/prompt.blob'):
+    if not os.path.exists('../storage/prompt.txt'):
         load_database()
 
-    with open('../storage/prompt.blob', 'r') as file:
+    with open('../storage/prompt.txt', 'r') as file:
         return file.read()
