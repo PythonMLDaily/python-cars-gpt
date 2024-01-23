@@ -67,6 +67,8 @@ Context:
 {car_stock_string}
 ---
 """
+    if not os.path.exists('../storage'):
+        os.mkdir('../storage')
 
     with open('../storage/prompt.blob', 'w') as file:
         file.write(prompt)
