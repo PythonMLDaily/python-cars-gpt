@@ -1,10 +1,12 @@
 import os
+from flask_cors import CORS
 from waitress import serve
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 import chatbot
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Load the .env file to be able to use the secrets
 load_dotenv()
