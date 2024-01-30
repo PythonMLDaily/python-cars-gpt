@@ -171,7 +171,6 @@ class MessageWidget {
         // Send GPT prompt to the server
         this.requestResponse(message)
             .then((resp) => {
-                console.log(resp.data.answer)
                 // Add the message to the chat box
                 this.addMessage(resp.data.answer, 'AI');
 
