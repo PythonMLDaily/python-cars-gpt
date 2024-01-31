@@ -11,7 +11,7 @@ def make_ai_request(question, identifier):
     chat_messages = ""
 
     if len(history) > 1:
-        chat_messages = f"Chat history: {'\n'.join([f'{message[1]}: {message[2]}\n' for message in history])}"
+        chat_messages = "Chat history:" + '\n'.join([f'{message[1]}: {message[2]}\n' for message in history])
         # Add the chat history to the prompt
 
     messages_list.append({"role": "user", "content": question})

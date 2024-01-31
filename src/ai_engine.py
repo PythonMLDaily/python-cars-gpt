@@ -68,7 +68,7 @@ def build_prompt(question, query=None, query_output=None, chat_messages=None):
 
     table_prompt = ""
     for table in tables:
-        table_prompt += f"{table} has columns: {', '.join([f'{column['name']} ({column['type']})' for column in tables[table]])}\n"
+        table_prompt += f"{table} has columns: " + ', '.join([f"{column['name']} ({column['type']})" for column in tables[table]]) + "\n"
 
     history = ""
     if chat_messages and chat_messages != "":
