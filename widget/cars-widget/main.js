@@ -14,7 +14,7 @@ class MessageWidget {
     chatBox = null;
     messagesHistory = [];
     identifierToken = '';
-    url = 'http://127.0.0.1:8080/api/chat';
+    url = 'http://127.0.0.1:5000/api/chat';
 
     getPosition(position) {
         const [vertical, horizontal] = position.split("-");
@@ -140,6 +140,20 @@ class MessageWidget {
         return '<div class="container">\n<span>##USER##</span>\n<p>##MESSAGE##</p>\n</div>';
     }
 
+    aiTypingTemplate() {
+        return '<div class="container" id="widget__message_ai_typing"><span>AI</span><p>Typing response...</p></div>';
+    }
+
+    addAiTyping() {
+        this.chatBox.innerHTML += this.aiTypingTemplate();
+        this.scrollToBottom();
+    }
+
+    removeAiTyping() {
+        let aiTyping = document.getElementById('widget__message_ai_typing');
+        aiTyping.remove();
+    }
+
     retrieveIdentifier() {
         // You can retrieve the identifier from the localStorage and use it for chat history if needed
         // We have skipped this part. Each reload is new session
@@ -164,18 +178,21 @@ class MessageWidget {
         // Get the message
         let messageBox = document.getElementById('widget__message');
         let message = messageBox.value;
+        messageBox.value = '';
 
         // Save the message to messages list
         this.addMessage(message, 'You');
 
+
+        this.addAiTyping();
+
         // Send GPT prompt to the server
         this.requestResponse(message)
             .then((resp) => {
+                this.removeAiTyping();
+
                 // Add the message to the chat box
                 this.addMessage(resp.data.answer, 'AI');
-
-                // Reset the message box value to '' (empty)
-                messageBox.value = '';
 
                 // Scroll the chatbox automatically
                 this.scrollToBottom();
