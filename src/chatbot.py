@@ -1,4 +1,4 @@
-import sql_generation
+import ai_engine
 import chat_history
 
 
@@ -18,7 +18,7 @@ def make_ai_request(question, identifier):
 
     chat_history.write_history(identifier, "user", question)
 
-    ai_response = sql_generation.generate(question, chat_messages)
+    ai_response = ai_engine.generate_response(question, chat_messages)
 
     chat_history.write_history(identifier, "assistant", ai_response)
 

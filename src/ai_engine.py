@@ -2,11 +2,20 @@ import json
 import os
 from openai import OpenAI
 import mysql.connector
-import database
+
+
+def connect_database():
+    connector = mysql.connector.connect(
+        host=os.getenv('DB_HOST'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_DATABASE')
+    )
+    return connector
 
 
 def get_table_names():
-    connector = database.connect()
+    connector = connect_database()
     cars_query = connector.cursor()
 
     cars_query.execute("""
@@ -119,8 +128,8 @@ def get_query(question):
     return query
 
 
-def evaluate_query(query):
-    connector = database.connect()
+def get_query_results_from_database(query):
+    connector = connect_database()
     cars_query = connector.cursor()
     cars_query.execute(query)
     cars = [dict((cars_query.description[i][0], value) for i, value in enumerate(row)) for row in cars_query.fetchall()]
@@ -129,10 +138,12 @@ def evaluate_query(query):
     return json.dumps(cars, indent=4, default=str)
 
 
-def generate(question, chat_messages=None):
-    query = get_query(question)
-    query_output = evaluate_query(query)
-    retry_query_prompt = build_prompt(question, query, query_output, chat_messages=chat_messages)
-    generated_query = query_open_ai(retry_query_prompt)
-
-    return generated_query.strip().strip('"')
+def generate_response(question, chat_messages=None):
+    try:
+        query = get_query(question)
+        query_output = get_query_results_from_database(query)
+        retry_query_prompt = build_prompt(question, query, query_output, chat_messages=chat_messages)
+        generated_query = query_open_ai(retry_query_prompt)
+        return generated_query.strip().strip('"')
+    except:
+        return "I'm sorry, I don't know the answer to that question. Please try again."
