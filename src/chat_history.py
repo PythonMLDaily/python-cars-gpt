@@ -1,7 +1,15 @@
+import os
 import sqlite3
 
 
+def check_if_storage_folder_exists():
+    if not os.path.exists("../storage"):
+        os.makedirs("../storage")
+
+
 def retrieve_history(identifier):
+    check_if_storage_folder_exists()
+
     database = sqlite3.connect("../storage/chat_database.db")
     cursor = database.cursor()
 
@@ -18,6 +26,8 @@ def retrieve_history(identifier):
 
 
 def write_history(identifier, sender, message):
+    check_if_storage_folder_exists()
+
     database = sqlite3.connect("../storage/chat_database.db")
     cursor = database.cursor()
 
