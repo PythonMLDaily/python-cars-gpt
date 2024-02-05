@@ -15,7 +15,7 @@ def make_ai_request(question, identifier):
     # If the chat log is more than 1 message, add the chat history to the prompt
     if len(history) > 1:
         messages_list.append({"role": "system",
-                              "content": f"Chat history: {''.join([f'{message[1]}: {message[2]}\n' for message in history])}"})
+                              "content": "Chat history:" + '\n'.join([f'{message[1]}: {message[2]}\n' for message in history])})
         # Add the chat history to the prompt
 
     messages_list.append({"role": "user", "content": question})
